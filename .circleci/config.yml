@@ -157,9 +157,9 @@ jobs:
             aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters "Name=tag:Project,Values=${CIRCLE_WORKFLOW_ID:0:7}"
-              --output text >> ~/project/.circleci/ansible/inventory
+              --output text >> /tmp/project/.circleci/ansible/inventory
       - persist_to_workspace:
-          root: ~/
+          root: /tmp/
           paths:
             - project/.circleci/ansible/inventory
       # Here's where you will add some code to rollback on failure    

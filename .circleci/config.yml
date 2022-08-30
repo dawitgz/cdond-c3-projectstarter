@@ -173,7 +173,8 @@ jobs:
       # Checkout code from git
       - checkout
       # Add ssh keys with fingerprint
-      - fingerprint: [11:f7:81:0b:69:ed:27:19:27:f7:47:6d:f2:21:7f:5e]
+      - add_ssh_keys:
+          fingerprints: ["11:f7:81:0b:69:ed:27:19:27:f7:47:6d:f2:21:7f:5e"]
       # attach workspace
       - attach_workspace:
           at: ~/
@@ -182,6 +183,14 @@ jobs:
           command: |
             # Your code here
             yum install -y tar gzip 
+      - run:
+          name: Upgrade pip
+          command: |
+            python3 -m pip install --upgrade --user pip
+      - run:
+          name: Install Ansible  
+          command: |
+            apk add --update ansible
       - run:
           name: Configure server
           command: |

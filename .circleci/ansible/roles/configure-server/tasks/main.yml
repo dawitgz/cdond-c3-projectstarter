@@ -8,13 +8,6 @@
   apt:
     upgrade: yes
 
-- name: "Install Python"
-  become: yes
-  apt:
-    name: python
-    state: latest
-    update_cache: yes
-
 - name: "Install nodejs, npm"
   become: yes
   apt:

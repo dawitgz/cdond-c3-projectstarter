@@ -18,17 +18,8 @@
       pause: 
         seconds: 10
 
-    - name: "install python for Ansible."
-      # Your code here
-      raw: sudo apt -y install python3-dev
-      register: mini_python_output
-
-  tasks:
-    - debug:
-        var=mini_python_output.stdout_lines
-
     - name: Check installed python version
-      shell: python -v 2>&1
+      shell: python3 -V 2>&1
       register: python_version
     
     - debug:

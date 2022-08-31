@@ -38,11 +38,11 @@ jobs:
             npm install
             npm run build
       - save_cache:
-          paths: [frontend/node_modules]
+          paths: 
+            - frontend/node_modules
+            - frontend/dist
           key: frontend-build
-      - save_cache:
-          paths: [frontend/dist]
-          key: frontend-dist
+
 
   build-backend:
     docker:
@@ -264,7 +264,7 @@ jobs:
             echo API_URL="http://${BACKEND_IP}:3030" > frontend/.env
             cat frontend/.env
       - restore_cache:
-          keys: [frontend-build, frontend-dist]
+          keys: [frontend-build]
       - run:
           name: Deploy frontend objects
           command: |

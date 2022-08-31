@@ -10,6 +10,7 @@ commands:
           name: Revert migrations 
           when: on_fail
           command: |
+            cat /home/circleci/.npm/_logs/2022-08-31T*-debug.log
             npm run migrations:revert
       - run:
           name: Destroy environments
@@ -228,6 +229,10 @@ jobs:
               curl https://kvdb.io/LZSPTqPpsY7LoAJG8JA73d/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '1'
             fi
       - run: cat ~/project/backend/migrations_dump.txt
+      - run: 
+          name: Look at error log file
+          command: cat /home/circleci/.npm/_logs/2022-08-31T*-debug.log
+          when: on_fail
      # Here's where you will add some code to rollback on failure 
       - destroy-environment    
 

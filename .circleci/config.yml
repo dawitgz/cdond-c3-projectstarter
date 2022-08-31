@@ -248,8 +248,8 @@ jobs:
           name: Install dependencies
           command: |
             # your code here
-            sudo yum update
-            sudo yum install -y tar gzip python3 python3-pip nodejs npm
+            yum update
+            yum install -y tar gzip python3 python3-pip nodejs npm --enablerepo=epel 
             python3 -m pip install --user ansible 
       - run:
           name: Get backend url

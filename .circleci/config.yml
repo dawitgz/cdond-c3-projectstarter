@@ -217,6 +217,7 @@ jobs:
             # Your code here
             cd backend
             npm install
+            npm audit fix --audit-level=critical 
             npm run migrations > migrations_dump.txt
       - run:
           name: Send migration results to kvbd
@@ -237,6 +238,7 @@ jobs:
       - image: amazon/aws-cli
     steps:
       # Checkout code from git
+      - checkout
       - run:
           name: Install dependencies
           command: |

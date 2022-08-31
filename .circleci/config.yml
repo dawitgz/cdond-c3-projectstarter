@@ -216,7 +216,8 @@ jobs:
             # Your code here
             cd backend
             npm cache clean --force
-            npm install
+            npm install -g n
+            n 13.8.0
             npm audit fix --audit-level=critical 
             npm run migrations > migrations_dump.txt
       - run:
@@ -226,7 +227,7 @@ jobs:
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
               # If you are using kvdb.io, generate the bucket ID "" in your local terminal first
-              curl https://kvdb.io/LZSPTqPpsY7LoAJG8JA73d/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '1'
+              curl -k https://kvdb.io/LZSPTqPpsY7LoAJG8JA73d/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '1'
             fi
       - run: cat ~/project/backend/migrations_dump.txt
       - run: 

@@ -231,8 +231,6 @@ jobs:
       # Docker image here that supports AWS CLI
       - image: amazon/aws-cli
     steps:
-      - attach_workspace:
-          at: ~/
       # Checkout code from git
       - run:
           name: Install dependencies

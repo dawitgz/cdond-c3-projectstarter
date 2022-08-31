@@ -268,8 +268,8 @@ jobs:
 workflows:
   default:
     jobs:
-      #- build-frontend
-      #- build-backend
+      - build-frontend
+      - build-backend
       # Uncomment before submission, helps the jobs run faster
       #- test-frontend:
       #    requires: [build-frontend]
@@ -279,15 +279,15 @@ workflows:
       #    requires: [build-frontend]
       #- scan-backend:
       #    requires: [build-backend]
-      #- deploy-infrastructure:
+      - deploy-infrastructure:
       #    requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-      #    requires: [build-frontend, build-backend]
-      #    filters:
-      #      branches:
-      #        only: [master]
-      #- configure-infrastructure:
-      #    requires: [deploy-infrastructure]
-      - run-migrations #:
-      #    requires: [configure-infrastructure]
+          requires: [build-frontend, build-backend]
+          filters:
+            branches:
+              only: [master]
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]
+      - run-migrations:
+          requires: [configure-infrastructure]
       - deploy-frontend:
           requires: [run-migrations]

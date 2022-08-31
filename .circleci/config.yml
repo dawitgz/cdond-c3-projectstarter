@@ -210,14 +210,13 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
+      - restore_cache:
+          keys: [backend-build]
       - run:
           name: Run migrations
           command: |
             # Your code here
             cd backend
-            npm cache clean --force
-            npm install -g n
-            n 13.8.0
             npm audit fix --audit-level=critical 
             npm run migrations > migrations_dump.txt
       - run:
@@ -297,7 +296,7 @@ workflows:
               only: [master]
       - configure-infrastructure:
           requires: [deploy-infrastructure]
-      - run-migrations:
-          requires: [configure-infrastructure]
+      #- run-migrations:
+      #    requires: [configure-infrastructure]
       - deploy-frontend:
           requires: [run-migrations]

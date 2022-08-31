@@ -40,8 +40,11 @@ jobs:
       - save_cache:
           paths: 
             - frontend/node_modules
-            - frontend/dist
           key: frontend-build
+      - save_cache:
+          paths: 
+            - frontend/dist
+          key: frontend-dist
 
 
   build-backend:
@@ -264,7 +267,7 @@ jobs:
             echo API_URL="http://${BACKEND_IP}:3030" > frontend/.env
             cat frontend/.env
       - restore_cache:
-          keys: [frontend-build]
+          keys: [frontend-dist]
       - run:
           name: Deploy frontend objects
           command: |

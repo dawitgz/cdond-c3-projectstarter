@@ -8,10 +8,6 @@
     src: ~/project/artifact.tar.gz
     dest: ~/web
 
-- name: "stop server"
-  shell: |
-    pm2 stop default
-
 - name: "restart server"
   shell: |
     pm2 start npm -- start

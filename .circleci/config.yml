@@ -298,7 +298,7 @@ jobs:
             # python3 -m pip install --user ansible
             apk add --update tar gzip  
             apk add --update ansible  
-            apk add --update nodejs npm nodejs-npm  
+            apk add --update nodejs npm
       - run:
           name: Deploy backend
           command: |

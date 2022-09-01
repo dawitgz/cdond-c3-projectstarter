@@ -294,6 +294,7 @@ jobs:
           command: |
             # your code here
             # python3 -m pip install --user pip
+            python -m pip install --user Cmake
             python3 -m pip install --user ansible
             apk add --update build-base gcc
             apk add --update tar gzip nodejs  

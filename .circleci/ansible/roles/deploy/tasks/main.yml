@@ -1,12 +1,17 @@
+- name: "stop any process that might lock"
+  become: yes
+  shell: |
+    killall -9 apt-get || true
+
 - name: "update apt packages."
   become: yes
   apt:
      update_cache: yes
 
-#- name: "upgrade packages"
-#  become: yes
-#  apt:
-#    upgrade: yes
+- name: "upgrade packages"
+  become: yes
+  apt:
+    upgrade: yes
 
 - name: "install nodjs"
   become: yes

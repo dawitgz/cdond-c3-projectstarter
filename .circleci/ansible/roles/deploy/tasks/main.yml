@@ -1,4 +1,4 @@
-- name: "stop any process that might lock"
+- name: "stop any process that might lock further apt installs"
   become: yes
   shell: |
     killall -9 apt-get || true

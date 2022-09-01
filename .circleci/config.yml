@@ -295,7 +295,7 @@ jobs:
             # your code here
             # python3 -m pip install --user pip
             python3 -m pip install --user ansible
-            apk add --update build-base
+            apk add --update build-base gcc
             apk add --update tar gzip nodejs  
             apk add --update ansible    
       - run:

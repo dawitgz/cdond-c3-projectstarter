@@ -8,6 +8,14 @@
     src: ~/project/artifact.tar.gz
     dest: ~/web
 
+- name: "Install pm2"
+  become: yes
+  npm:
+    name: pm2
+    global: yes
+    production: yes
+    state: present
+
 - name: "restart server"
   shell: |
     pm2 start npm -- start

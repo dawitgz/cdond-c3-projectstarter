@@ -1,19 +1,26 @@
+- name: "Install nodejs"
+  become: yes
+  apt:
+    name: nodejs
+    state: latest
+    update_cache: yes
+
 - name: "create a web directory"
   file:
     path: ~/web
     state: directory
 
+- name: "Install npm"
+  become: yes
+  apt:
+    name: npm
+    state: latest
+    update_cache: yes
+
 - name: "unarchive and extract artifact"
   unarchive:
     src: ~/project/artifact.tar.gz
     dest: ~/web
-
-- name: "Install nodejs, npm"
-  become: yes
-  apt:
-    name: ['nodejs','npm']
-    state: latest
-    update_cache: yes
 
 - name: "Install pm2"
   become: yes

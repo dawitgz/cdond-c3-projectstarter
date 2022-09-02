@@ -236,7 +236,7 @@ jobs:
       - run: cat ~/project/backend/migrations_dump.txt
       - run: 
           name: Look at error log file
-          command: cat /home/circleci/.npm/_logs/2022-08-31T*-debug.log
+          command: cat /home/circleci/.npm/_logs/2022-*-debug.log
           when: on_fail
      # Here's where you will add some code to rollback on failure 
       - destroy-environment    
@@ -335,12 +335,11 @@ jobs:
             export BACKEND_IP=$(tail -1 ~/project/.circleci/ansible/inventory.txt)
             echo BACKEND_IP
             export API_URL="http://{BACKEND_IP}:3030"
-            echo BACKEND_URL
       - run:
           name: Backend smoke test.
           command: |
             # your code here
-            export API_URL
+            echo "API_URL=${API_URL}"
             if curl "${API_URL}/api/status" | grep "ok"
             then
               return 0

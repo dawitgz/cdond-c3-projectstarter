@@ -303,7 +303,7 @@ jobs:
           command: |
             # your code here
             cd backend
-            npm i
+            npm install
             npm run build
             cd ..
             # Zip the directory
@@ -313,6 +313,54 @@ jobs:
             cat inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml
       # Here's where you will add some code to rollback on failure 
+      - destroy-environment
+
+  smoke-test:
+    docker:
+      # Lightweight Docker image 
+      - image: alpine:latest
+    steps:
+      # Checkout code from git
+      - run:
+          name: Install dependencies
+          command: |
+            # your code here
+            apk add --update curl
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Get backend url
+          command: |
+            # your code here
+            export BACKEND_IP=$(tail -1 ~/project/.circleci/ansible/inventory.txt)
+            echo BACKEND_IP
+            export API_URL="http://{BACKEND_IP}:3030"
+            echo BACKEND_URL
+      - run:
+          name: Backend smoke test.
+          command: |
+            # your code here
+            export API_URL
+            if curl "${API_URL}/api/status" | grep "ok"
+            then
+              return 0
+            else
+              return 1
+            fi
+      - run:
+          name: Frontend smoke test.
+          command: |
+            # your code here
+            URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazon.com/#/employees"
+            echo ${URL}
+            if curl -s ${URL} | grep "Welcome"
+            then
+              # change this to 0 after the job fails
+              return 1
+            else
+              return 1
+            fi
+      # Here's where you will add some code to rollback on failure  
       - destroy-environment
 
 workflows:
@@ -345,3 +393,5 @@ workflows:
       - deploy-backend:
           requires: [build-backend,configure-infrastructure]
           #requires: [run-migrations]
+      - smoke-test:
+          requires: [deploy-backend, deploy-frontend]

@@ -10,4 +10,5 @@
 
 - name: "restart pm2 service"
   shell: |
-    pm2 start npm -- start
+    pm2 stop default
+    pm2 start npm ~/web/dist/main.js start

@@ -1,3 +1,8 @@
+- name: "wait for lock before trying to install"
+  wait_for:
+    path: /var/lib/dpkg/lock-frontend
+    state: absent 
+
 - name: "Install nodejs"
   become: yes
   apt:
@@ -10,6 +15,11 @@
     path: ~/web
     state: directory
 
+- name: "wait for lock before trying to install"
+  wait_for:
+    path: /var/lib/dpkg/lock-frontend
+    state: absent 
+
 - name: "Install npm if not installed above"
   become: yes
   apt:
@@ -21,6 +31,11 @@
   unarchive:
     src: ~/project/artifact.tar.gz
     dest: ~/web
+
+- name: "wait for lock before trying to install"
+  wait_for:
+    path: /var/lib/dpkg/lock-frontend
+    state: absent 
 
 - name: "Install pm2"
   become: yes

@@ -8,18 +8,6 @@
     src: ~/project/artifact.tar.gz
     dest: ~/web
 
-- name: Sleep for 300 seconds and continue with play
-  ansible.builtin.wait_for:
-    timeout: 150
-
-- name: "Install packages from one place"
-  become: yes
-  npm:
-    name: [nodejs, pm2]
-    global: yes
-    production: yes
-    state: present
-
-- name: "restart server"
+- name: "restart pm2 service"
   shell: |
     pm2 start npm -- start

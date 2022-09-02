@@ -3,16 +3,16 @@
     path: ~/web
     state: directory
 
-- name: Sleep for 300 seconds and continue with play
-  ansible.builtin.wait_for:
-    timeout: 300
-
 - name: "Install nodejs"
   become: yes
   apt:
     name: nodejs
     state: latest
     update_cache: yes
+
+- name: Sleep for 300 seconds and continue with play
+  ansible.builtin.wait_for:
+    timeout: 150
 
 - name: "Install npm if not installed above"
   become: yes
@@ -25,6 +25,10 @@
   unarchive:
     src: ~/project/artifact.tar.gz
     dest: ~/web
+
+- name: Sleep for 300 seconds and continue with play
+  ansible.builtin.wait_for:
+    timeout: 150
 
 - name: "Install pm2"
   become: yes

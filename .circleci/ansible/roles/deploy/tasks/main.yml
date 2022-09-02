@@ -8,6 +8,13 @@
     src: ~/project/artifact.tar.gz
     dest: ~/web
 
+- name: "Install nodejs, npm"
+  become: yes
+  apt:
+    name: ['nodejs','npm']
+    state: latest
+    update_cache: yes
+
 - name: "Install pm2"
   become: yes
   npm:

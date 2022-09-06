@@ -210,7 +210,7 @@ jobs:
   run-migrations:
     docker:
       # Docker image here that supports NodeJS
-      - image: cimg/node:13.8.0
+      - image: cimg/node:16.16.0
     steps:
       # Checkout code from git
       - checkout
@@ -393,4 +393,4 @@ workflows:
           requires: [build-backend,configure-infrastructure]
           #requires: [run-migrations]
       - smoke-test:
-          requires: [deploy-backend, deploy-frontend]
+          requires: [deploy-backend, deploy-frontend,configure-infrastructure]

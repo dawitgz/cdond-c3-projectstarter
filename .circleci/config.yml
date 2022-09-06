@@ -252,7 +252,6 @@ jobs:
           name: Install dependencies
           command: |
             # your code here
-            yum update
             yum install -y tar gzip 
       - run:
           name: Get backend url

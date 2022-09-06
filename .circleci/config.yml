@@ -210,7 +210,7 @@ jobs:
   run-migrations:
     docker:
       # Docker image here that supports NodeJS
-      - image: cimg/node:14.8.0
+      - image: cimg/node:13.8.0
     steps:
       # Checkout code from git
       - checkout
@@ -222,7 +222,6 @@ jobs:
             # Your code here
             cd backend
             npm install
-            npm audit fix --audit-level=critical 
             npm run migrations > migrations_dump.txt
       - run:
           name: Send migration results to kvbd
@@ -363,7 +362,7 @@ jobs:
 workflows:
   default:
     jobs:
-      - build-frontend
+      #- build-frontend
       - build-backend
       # Uncomment before submission, helps the jobs run faster
       #- test-frontend:
@@ -374,21 +373,21 @@ workflows:
       #    requires: [build-frontend]
       #- scan-backend:
       #    requires: [build-backend]
-      - deploy-infrastructure:
+      #- deploy-infrastructure:
       #    requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-          requires: [build-frontend, build-backend]
-          filters:
-            branches:
-              only: [master]
-      - configure-infrastructure:
-          requires: [deploy-infrastructure]
+      #    requires: [build-frontend, build-backend]
+      #    filters:
+      #      branches:
+      #        only: [master]
+      #- configure-infrastructure:
+      #    requires: [deploy-infrastructure]
       - run-migrations:
-          requires: [configure-infrastructure]
-      - deploy-frontend:
-          requires: [build-frontend, deploy-infrastructure]
+          requires: [build-backend]
+      #- deploy-frontend:
+      #    requires: [build-frontend, deploy-infrastructure]
           #requires: [run-migrations]
-      - deploy-backend:
-          requires: [build-backend,configure-infrastructure]
+      #- deploy-backend:
+      #    requires: [build-backend,configure-infrastructure]
           #requires: [run-migrations]
-      - smoke-test:
-          requires: [deploy-backend, deploy-frontend,configure-infrastructure]
+      #- smoke-test:
+      #    requires: [deploy-backend, deploy-frontend,configure-infrastructure]

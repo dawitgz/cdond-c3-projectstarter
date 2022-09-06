@@ -8,7 +8,7 @@
     src: ~/project/artifact.tar.gz
     dest: ~/web
 
-- name: "restart pm2 service"
-  shell: |
-    pm2 stop default
-    pm2 start npm ~/web/dist/main.js
+- name: "start pm2 for npm"
+  shell:
+    cmd: pm2 start npm -- start
+    chdir: ~/web/dist

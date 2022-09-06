@@ -35,7 +35,7 @@ commands:
 jobs:
   build-frontend:
     docker:
-      - image: circleci/node:16.8.0
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - restore_cache:
@@ -58,7 +58,7 @@ jobs:
 
   build-backend:
     docker:
-      - image: circleci/node:16.8.0
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - restore_cache:
@@ -76,7 +76,7 @@ jobs:
 
   test-frontend:
     docker:
-      - image: circleci/node:16.8.0
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - restore_cache: 
@@ -92,7 +92,7 @@ jobs:
   test-backend:
     docker:
       # Docker image here
-      - image: circleci/node:16.8.0
+      - image: circleci/node:13.8.0
     steps:
       # Checkout code from git
       - checkout
@@ -110,7 +110,7 @@ jobs:
   scan-frontend:
     docker:
       # Docker image here
-      - image: circleci/node:16.8.0
+      - image: circleci/node:13.8.0
     steps:
       # Checkout code from git
       - checkout
@@ -128,7 +128,7 @@ jobs:
   scan-backend:
     docker:
       # Docker image here
-      - image: circleci/node:16.8.0
+      - image: circleci/node:13.8.0
     steps:
       # Checkout code from git
       - checkout
@@ -241,7 +241,7 @@ jobs:
             # Your code here
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
-              # If you are using kvdb.io, generate the bucket ID "" in your local terminal first
+              # If you are using kvdb.io, generate the bucket ID in your local terminal first
               curl -k https://kvdb.io/LZSPTqPpsY7LoAJG8JA73d/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '1'
             fi
       - run: cat ~/project/backend/migrations_dump.txt
@@ -340,16 +340,13 @@ jobs:
       - attach_workspace:
           at: ~/
       - run:
-          name: Get backend url
+          name: Backend smoke test.
           command: |
             # your code here
             export BACKEND_IP=$(tail -1 ~/project/.circleci/ansible/inventory.txt)
             echo "${BACKEND_IP}"
-            export API_URL="http://{BACKEND_IP}:3030"
+            export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
-      - run:
-          name: Backend smoke test.
-          command: |
             # your code here
             echo "API_URL=${API_URL}"
             if curl "${API_URL}/api/status" | grep "ok"

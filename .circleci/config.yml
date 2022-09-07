@@ -357,24 +357,10 @@ jobs:
           name: Install dependencies
           command: |
             # your code here
+            apk add aws-cli
             apk add --update curl
       - attach_workspace:
           at: ~/
-      - run:
-          name: Backend smoke test.
-          command: |
-            # your code here
-            export BACKEND_IP=$(tail -1 ~/project/.circleci/ansible/inventory.txt)
-            echo "${BACKEND_IP}"
-            export API_URL="http://${BACKEND_IP}:3030/api/status"
-            echo "${API_URL}"
-            # your code here
-            if curl "${API_URL}" | grep "ok"
-            then
-              return 0
-            else
-              return 1
-            fi
       - run:
           name: Frontend smoke test.
           command: |
@@ -387,9 +373,28 @@ jobs:
               return 1
             else
               return 1
+            fi          
+      - run:
+          name: Backend smoke test.
+          command: |
+            # your code here
+            #!/usr/bin/env bash
+            sleep 0.1
+            export BACKEND_IP=$(tail -1 ~/project/.circleci/ansible/inventory.txt)
+            echo "${BACKEND_IP}"
+            export API_URL="http://${BACKEND_IP}:3030/api/status"
+            echo "${API_URL}"
+            # your code here
+            if curl "${API_URL}" | grep "ok"
+            then
+              return 0
+            else
+              return 1
             fi
+
       # Here's where you will add some code to rollback on failure  
       - destroy-environment
+      - revert-migrations
 
 workflows:
   default:

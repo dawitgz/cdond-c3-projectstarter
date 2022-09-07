@@ -254,8 +254,6 @@ jobs:
             then
               # If you are using kvdb.io, generate the bucket ID in your local terminal first
               curl -k https://kvdb.io/LZSPTqPpsY7LoAJG8JA73d/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '1'
-            else 
-              curl -k https://kvdb.io/LZSPTqPpsY7LoAJG8JA73d/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '0'
             fi
       - run: cat ~/project/backend/migrations_dump.txt
       - run: 
@@ -325,6 +323,16 @@ jobs:
           name: Deploy backend
           command: |
             # your code here
+            echo ENVIROMENT=production > "backend/.env"
+            echo TYPEORM_CONNECTION=${TYPEORM_CONNECTION} >> "backend/.env"
+            echo TYPEORM_MIGRATIONS_DIR=${TYPEORM_MIGRATIONS_DIR} >> "backend/.env"
+            echo TYPEORM_ENTITIES=${TYPEORM_ENTITIES} >> "backend/.env"
+            echo TYPEORM_MIGRATIONS=${TYPEORM_MIGRATIONS} >> "backend/.env"
+            echo TYPEORM_HOST=${TYPEORM_HOST} >> backend/.env
+            echo TYPEORM_PORT=${TYPEORM_PORT} >> backend/.env
+            echo TYPEORM_USERNAME=${TYPEORM_USERNAME} >> backend/.env
+            echo TYPEORM_PASSWORD=${TYPEORM_PASSWORD} >> backend/.env
+            echo TYPEORM_DATABASE=${TYPEORM_DATABASE} >> backend/.env
             cd backend
             npm install
             npm run build
@@ -397,19 +405,19 @@ workflows:
       #    requires: [build-frontend]
       #- scan-backend:
       #    requires: [build-backend]
-      #- deploy-infrastructure:
+      - deploy-infrastructure:
       #    requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-      #    requires: [build-frontend, build-backend]
+          requires: [build-frontend, build-backend]
       #    filters:
       #      branches:
       #        only: [master]
-      #- configure-infrastructure:
-      #    requires: [deploy-infrastructure]
-      - run-migrations #:
-      #    requires: [configure-infrastructure]
-      #- deploy-frontend:
-      #    requires: [run-migrations]
-      #- deploy-backend:
-      #    requires: [run-migrations]
-      #- smoke-test:
-      #    requires: [deploy-backend, deploy-frontend]
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]
+      - run-migrations:
+          requires: [configure-infrastructure]
+      - deploy-frontend:
+          requires: [run-migrations]
+      - deploy-backend:
+          requires: [run-migrations]
+      - smoke-test:
+          requires: [deploy-backend, deploy-frontend]

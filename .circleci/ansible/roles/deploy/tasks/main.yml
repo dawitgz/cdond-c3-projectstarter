@@ -14,3 +14,7 @@
       pm2 stop default
       pm2 start npm -- start
     chdir: ~/web/dist
+
+- name: "Pause a few seconds until the app starts"
+  pause: 
+    seconds: 400

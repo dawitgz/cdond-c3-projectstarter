@@ -11,7 +11,7 @@
 - name: "Install nodejs, npm"
   become: yes
   apt:
-    name: ['nodejs','npm']
+    name: ['nodejs','npm','python3']
     state: latest
     update_cache: yes
 

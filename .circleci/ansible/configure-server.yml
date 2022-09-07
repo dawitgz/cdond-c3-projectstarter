@@ -13,22 +13,25 @@
     - ansible_stdout_callback: yaml
 
   pre_tasks:
-    - name: "wait 600 seconds for target connection to become reachable/usable."
-      # Your code here
-      pause: 
-        seconds: 10
-
-    - name: Check installed python version
-      shell: python3 -V 2>&1
-      register: python_version
-    
-    - debug:
-        var=python_version.stdout_lines
+  - name: "wait 600 seconds for target connection to become reachable/usable."
+    # Your code here
+    pause: 
+      seconds: 100
+  - name: "install dependencies"
+    becomes: yes
+    register: aptinstall
+    apt:
+      name:
+        - nodejs
+        - npm
+        - awscli
+  - debug:
+      var=python_version.stdout_lines
   # Get the environment variables from CircleCI and add to the EC2 instance
   environment:
     - TYPEORM_CONNECTION: "{{ lookup('env', 'TYPEORM_CONNECTION')}}"  
-    - TYPEORM_ENTITIES: "{{ lookup('env', 'TYPEORM_ENTITIES') }}"
     # Add more env vars here
+    - TYPEORM_ENTITIES: "{{ lookup('env', 'TYPEORM_ENTITIES')}}"
     - TYPEORM_HOST: "{{ lookup('env', 'TYPEORM_HOST')}}"
     - TYPEORM_PORT: 5432
     - TYPEORM_USERNAME: "{{ lookup('env', 'TYPEORM_USERNAME')}}"
@@ -36,6 +39,29 @@
     - TYPEORM_DATABASE: "{{ lookup('env', 'TYPEORM_DATABASE')}}"
     - TYPEORM_MIGRATIONS: "{{ lookup('env', 'TYPEORM_MIGRATIONS')}}"
     - TYPEORM_MIGRATIONS_DIR: "{{ lookup('env', 'TYPEORM_MIGRATIONS_DIR')}}"
+
+  tasks:
+  - name: Copy Environment variables to a .env on server so it persists for migration workflow
+    shell: |
+      echo $TYPEORM_CONNECTION
+      echo $TYPEORM_ENTITIES
+      echo $TYPEORM_HOST
+
+  - name: Check installed python version
+    shell: python3 -V 2>&1
+    register: python_version
+
+  - name: Version of Node and NPM
+    shell:
+      "npm -v && nodejs -v"
+    register: versioninfo
+  - name: Validate if the installation is intact
+    assert:
+    that: "versioninfo is changed"  
+
+  post_tasks:
+  - debug:
+    msg: "{{ansible_env}}"
 
   roles:
     # Your code here

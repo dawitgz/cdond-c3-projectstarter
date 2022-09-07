@@ -360,20 +360,7 @@ jobs:
             apk add aws-cli
             apk add --update curl
       - attach_workspace:
-          at: ~/
-      - run:
-          name: Frontend smoke test.
-          command: |
-            # your code here
-            URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazon.com/#/employees"
-            echo ${URL}
-            if curl -s ${URL} | grep "Welcome"
-            then
-              # change this to 0 after the job fails
-              return 1
-            else
-              return 1
-            fi          
+          at: ~/        
       - run:
           name: Backend smoke test.
           command: |
@@ -391,7 +378,19 @@ jobs:
             else
               return 1
             fi
-
+      - run:
+          name: Frontend smoke test.
+          command: |
+            # your code here
+            URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazon.com/#/employees"
+            echo ${URL}
+            if curl -s ${URL} | grep "Welcome"
+            then
+              # change this to 0 after the job fails
+              return 1
+            else
+              return 1
+            fi  
       # Here's where you will add some code to rollback on failure  
       - destroy-environment
       - revert-migrations

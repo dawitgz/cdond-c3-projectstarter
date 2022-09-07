@@ -208,6 +208,7 @@ jobs:
       - run:
           name: Install Ansible  
           command: |
+            apk add --no-cache aws-cli
             apk add --update ansible
       - run:
           name: Configure server

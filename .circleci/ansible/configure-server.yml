@@ -17,14 +17,7 @@
     # Your code here
     pause: 
       seconds: 100
-  - name: "install dependencies"
-    becomes: yes
-    register: aptinstall
-    apt:
-      name:
-        - nodejs
-        - npm
-        - awscli
+
   - debug:
       var=python_version.stdout_lines
   # Get the environment variables from CircleCI and add to the EC2 instance

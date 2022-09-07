@@ -52,10 +52,6 @@
     assert:
     that: "versioninfo is changed"  
 
-  post_tasks:
-  - debug:
-    msg: "{{ansible_env}}"
-
   roles:
     # Your code here
     - configure-server

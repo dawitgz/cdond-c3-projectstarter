@@ -43,15 +43,7 @@
   - name: Check installed python version
     shell: python3 -V 2>&1
     register: python_version
-
-  - name: Version of Node and NPM
-    shell:
-      "npm -v && nodejs -v"
-    register: versioninfo
-  - name: Validate if the installation is intact
-    assert:
-    that: "versioninfo is changed"  
-
+    
   roles:
     # Your code here
     - configure-server

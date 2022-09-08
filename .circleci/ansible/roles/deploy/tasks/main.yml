@@ -17,4 +17,4 @@
 
 - name: "Pause a few seconds until the app starts"
   pause: 
-    seconds: 400
+    seconds: 100

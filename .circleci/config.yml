@@ -437,13 +437,16 @@ jobs:
       - image: amazon/aws-cli
     steps:
       # Checkout code from git
+      - run:
+          name: Install tar and gzip
+          command: |
+            # your code here
+            yum install -y tar gzip 
       - attach_workspace:
           at: ~/
       - run:
           name: Get old stack workflow id
           command: |
-            # your code here
-            yum install -y tar gzip 
             # Fetch the Old workflow ID
             export OldWorkflowID=$(cat ~/OldWorkflowID.txt)
             echo OldWorkflowID: "${OldWorkflowID}"

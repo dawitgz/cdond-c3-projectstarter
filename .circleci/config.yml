@@ -383,7 +383,7 @@ jobs:
           command: |
             # your code here
             URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazon.com/#/employees"
-            echo "${URL}""
+            echo "${URL}"
             if curl -s "${URL}" | grep "Welcome"
             then
               # change this to 0 after the job fails

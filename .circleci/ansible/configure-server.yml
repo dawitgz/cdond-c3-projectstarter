@@ -47,4 +47,4 @@
   roles:
     # Your code here
     - configure-server
-    - install-prometheus
+    - configure-prometheus-node-exporter

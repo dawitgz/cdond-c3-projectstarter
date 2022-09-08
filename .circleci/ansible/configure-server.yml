@@ -47,3 +47,4 @@
   roles:
     # Your code here
     - configure-server
+    - install-prometheus

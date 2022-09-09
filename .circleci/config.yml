@@ -41,30 +41,16 @@ jobs:
       - restore_cache:
           keys: [frontend-build]
       - run:
-          name: Get backend url to bake into frontend env variable
-          command: |
-            # your code here
-            export BACKEND_IP=$(aws ec2 describe-instances --query "Reservations[*].Instances[*].PublicIpAddress" --filters "Name=tag:Project,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" --output text) 
-            export API_URL="http://${BACKEND_IP}:3030"
-            echo "API_URL = ${API_URL}"
-            echo API_URL="http://${BACKEND_IP}:3030" > frontend/.env
-            cat frontend/.env
-      - run:
           name: Build front-end
           command: |
             # Your code here
             cd frontend
-            cat .env
-            npm install webpack
-            npm run build:prod
+            npm install
+            npm build
       - save_cache:
           paths: 
             - frontend/node_modules
           key: frontend-build
-      - save_cache:
-          paths: 
-            - frontend/dist
-          key: frontend-dist
 
   build-backend:
     docker:
@@ -266,7 +252,27 @@ jobs:
               # If you are using kvdb.io, generate the bucket ID in your local terminal first
               curl -k https://kvdb.io/LZSPTqPpsY7LoAJG8JA73d/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '1'
             fi
-      - run: cat ~/project/backend/migrations_dump.txt
+      - run:
+          name: Get backend url to bake into frontend env variable
+          command: |
+            # your code here
+            export BACKEND_IP=$(aws ec2 describe-instances --query "Reservations[*].Instances[*].PublicIpAddress" --filters "Name=tag:Project,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" --output text) 
+            export API_URL="http://${BACKEND_IP}:3030"
+            echo "API_URL = ${API_URL}"
+            echo API_URL="http://${BACKEND_IP}:3030" > frontend/.env
+            cat frontend/.env
+      - run:
+          name: Build front-end
+          command: |
+            # Your code here
+            cd frontend
+            cat .env
+            npm install webpack
+            npm run build:prod
+      - save_cache:
+          paths: 
+            - frontend/dist
+          key: frontend-dist
       - run: 
           name: Look at error log file
           command: cat /home/circleci/.npm/_logs/2022-*-debug.log
@@ -286,9 +292,9 @@ jobs:
           name: Install dependencies
           command: |
             # your code here
-            yum install -y tar gzip 
+            yum install -y tar gzip
       - restore_cache:
-          keys: [frontend-dist]
+          keys: [frontend-dist]   
       - run:
           name: Deploy frontend objects
           command: |
@@ -361,7 +367,7 @@ jobs:
             apk add aws-cli
             apk add --update curl
       - attach_workspace:
-          at: ~/        
+          at: ~/      
       - run:
           name: Backend smoke test.
           command: |

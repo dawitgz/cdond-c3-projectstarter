@@ -264,7 +264,7 @@ jobs:
       - run:
           name: Install webpack
           command: |
-            apt install webpack
+            npm install --save-dev webpack
       - run:
           name: Build front-end
           command: |

@@ -262,12 +262,15 @@ jobs:
             echo API_URL="http://${BACKEND_IP}:3030" > frontend/.env
             cat frontend/.env
       - run:
+          name: Install webpack
+          command: |
+            npm install webpack
+      - run:
           name: Build front-end
           command: |
             # Your code here
             cd frontend
             cat .env
-            npm install webpack
             npm run build:prod
       - save_cache:
           paths: 

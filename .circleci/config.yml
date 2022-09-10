@@ -223,7 +223,7 @@ jobs:
       # Checkout code from git
       - checkout
       - restore_cache:
-          keys: [backend-build]
+          keys: [frontend-build]
       - run:
           name: Run migrations
           command: |
@@ -271,6 +271,7 @@ jobs:
             # Your code here
             cd frontend
             cat .env
+            npm install
             npm run build:prod
       - save_cache:
           paths: 

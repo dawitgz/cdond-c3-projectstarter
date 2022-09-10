@@ -275,7 +275,7 @@ jobs:
       - save_cache:
           paths: 
             - frontend/dist
-          key: frontend-dist
+          key: frontend-dist-new
       - run: 
           name: Look at error log file
           command: cat /home/circleci/.npm/_logs/2022-*-debug.log
@@ -297,7 +297,7 @@ jobs:
             # your code here
             yum install -y tar gzip
       - restore_cache:
-          keys: [frontend-dist]   
+          keys: [frontend-dist-new]   
       - run:
           name: Deploy frontend objects
           command: |
